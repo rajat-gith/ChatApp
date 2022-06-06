@@ -6,18 +6,23 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUp : AppCompatActivity() {
     private lateinit var mAuth:FirebaseAuth
+    private lateinit var mDbref:DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         mAuth=FirebaseAuth.getInstance()
+
         val btnlogin=findViewById<Button>(R.id.Loginbtn)
 
         btnlogin.setOnClickListener {
+            val name=name.text.toString()
             val register_email=register_email.text.toString()
             val registerpassword=register_password.text.toString()
             if(checking()){
@@ -25,8 +30,11 @@ class SignUp : AppCompatActivity() {
                     .addOnCompleteListener(this){ task->
                         if(task.isSuccessful()){
                             Toast.makeText(this,"Account Created",Toast.LENGTH_SHORT).show()
+                            addUserToDatabase(name,register_email,mAuth.currentUser!!.uid!!)
                             val intent= Intent(this,MainActivity::class.java)
+                            finish()
                             startActivity(intent);
+
                         }else{
                             Toast.makeText(this,"Some Error Occured",Toast.LENGTH_SHORT).show()
                         }
@@ -45,5 +53,11 @@ class SignUp : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    private fun addUserToDatabase(name:String,email:String,uid:String){
+        mDbref=FirebaseDatabase.getInstance().getReference()
+        mDbref.child("user").child(uid).setValue(User(name,email,uid))
+
     }
 }

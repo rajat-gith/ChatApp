@@ -37,6 +37,9 @@ class Login : AppCompatActivity() {
                     .addOnCompleteListener(this){task->
                         if(task.isSuccessful) {
                             Toast.makeText(this, "LoginSuccess", Toast.LENGTH_SHORT).show()
+                            val intent= Intent(this,MainActivity::class.java)
+                            finish()
+                            startActivity(intent);
 
                         }else{
                             Toast.makeText(this,"Some Error Occured",Toast.LENGTH_SHORT).show()
