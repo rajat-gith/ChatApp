@@ -22,6 +22,7 @@ class Login : AppCompatActivity() {
         val SignupBtn=findViewById<Button>(R.id.SignUp)
         val LoginBtn=findViewById<Button>(R.id.Login)
 
+        supportActionBar?.hide()
         mAuth= FirebaseAuth.getInstance()
 
         SignupBtn.setOnClickListener {

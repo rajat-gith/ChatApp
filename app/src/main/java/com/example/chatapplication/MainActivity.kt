@@ -20,15 +20,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
         mAuth= FirebaseAuth.getInstance()
-        mDbref=FirebaseDatabase.getInstance().getReference("user")
-
-        userlist=ArrayList()
-        adapter=UserAdapter(this,userlist)
+        mDbref=FirebaseDatabase.getInstance().getReference()
 
         userrecyclerview=findViewById(R.id.recycler_view)
-
         userrecyclerview.layoutManager=LinearLayoutManager(this)
+        userlist= arrayListOf()
+        adapter=UserAdapter(this,userlist)
         userrecyclerview.adapter=adapter
 
         mDbref.child("user").addValueEventListener(object:ValueEventListener{
